@@ -95,7 +95,7 @@ static void clk_enable_unlock(unsigned long flags)
 
 /***        debugfs support        ***/
 
-#if defined(CONFIG_DEBUG_FS) && !defined(CONFIG_ARCH_EXYNOS)
+#ifdef CONFIG_DEBUG_FS
 #include <linux/debugfs.h>
 
 static struct dentry *rootdir;
@@ -1802,6 +1802,10 @@ int clk_set_rate(struct clk *clk, unsigned long rate)
 	/* prevent racing with updates to the clock topology */
 	clk_prepare_lock();
 
+	/* bail early if nothing to do */
+	if (rate == clk_get_rate(clk))
+		goto out;
+
 	if ((clk->flags & CLK_SET_RATE_GATE) && clk->prepare_count) {
 		ret = -EBUSY;
 		goto out;
@@ -1943,6 +1947,9 @@ int clk_set_parent(struct clk *clk, struct clk *parent)
 
 	/* prevent racing with updates to the clock topology */
 	clk_prepare_lock();
+
+	if (clk->parent == parent)
+		goto out;
 
 	/* check that we are allowed to re-parent if the clock is in use */
 	if ((clk->flags & CLK_SET_PARENT_GATE) && clk->prepare_count) {
