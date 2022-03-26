@@ -9,16 +9,6 @@
 #
 #
 
-
-ifeq ($(CONFIG_MALI_T8XX),y)
-	ifeq ($(CONFIG_MALI_R5P0_REL),y)
-		obj-y += t8xx/r5p0/
-	endif
-    ifeq ($(CONFIG_MALI_R7P0),y)
-        obj-y += t8xx/r7p0/
-    endif
-endif
-
 ifeq ($(CONFIG_MALI_T83X),y)
     ifeq ($(CONFIG_MALI_R12P0),y)
         obj-y += t83x/r12p0/
