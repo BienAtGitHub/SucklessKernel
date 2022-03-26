@@ -210,8 +210,6 @@ source "drivers/motor/Kconfig"
 
 source "drivers/fingerprint/Kconfig"
 
-source "drivers/gps/Kconfig"
-
 source "drivers/sensorhub/Kconfig"
 
 endmenu
